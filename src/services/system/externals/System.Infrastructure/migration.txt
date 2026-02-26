@@ -1,0 +1,4 @@
+
+dotnet ef migrations add addTenant --project src/services/system/externals/System.Infrastructure --startup-project src/services/system/externals/System.WebAPI
+
+dotnet ef database update --project src/services/system/externals/System.Infrastructure --startup-project src/services/system/externals/System.WebAPI

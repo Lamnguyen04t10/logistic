@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.sln.ide
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.dll
+*.exe
+*.pdb
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+
+# NuGet packages
+*.nupkg
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# User-specific files
+*.sln.ide
+*.sln.docstates
+*.sln.userprefs
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code files
+.vscode/
+
+# Logs
+*.log
+
+# Docker
+#docker-compose.override.yml
+#docker-compose*.yml
+
+# Migration files
+/migrations/
+.Migrations/
+*.db
+
+# Environment variables
+.env
+
+# Visual Studio Code
+.vscode/
+.history/

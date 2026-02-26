@@ -1,0 +1,67 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver2022
+    platform: linux/amd64
+    hostname: "mssqlex03"
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=admin@123456
+    ports:
+      - "1433:1433"
+    networks:
+      - backend-network
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+    restart: unless-stopped
+  
+  # redis:
+  #   image: redis:7
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: always
+  #   networks:
+  #     - backend-network
+  #   labels:
+  #     - "consul.service.name=redis"
+  #     - "consul.service.port=6379"
+  
+  # redisinsight:
+  #   image: redis/redisinsight:latest
+  #   container_name: redisinsight
+  #   ports:
+  #     - "5540:5540"
+  #   environment:
+  #     RI_REDIS_HOST: redis
+  #     RI_REDIS_PORT: 6379
+  #     RI_REDIS_ALIAS: "My Redis"
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend-network
+  system-api:
+    container_name: system-api
+    image: system-api/system.webapi:latest
+    build:
+      context: .
+      dockerfile: src/services/system/externals/System.WebApi/Dockerfile
+    ports:
+      - "6001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Consul__Host=consul
+      - ConnectionStrings__Application=Server=sqlserver,1433;Database=SystemService;User Id=sa;Password=admin@123456;TrustServerCertificate=True;
+    depends_on:
+      - sqlserver
+    networks:
+      - backend-network
+   
+volumes:
+  postgres-data:
+  sqlserverdata:
+
+networks:
+  backend-network:
+    driver: bridge
